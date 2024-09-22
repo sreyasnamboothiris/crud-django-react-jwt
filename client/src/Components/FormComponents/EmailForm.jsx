@@ -4,7 +4,7 @@ import InputField from './InputField'
 function EmailForm() {
   return (
     <div>
-      <InputField text={'Enter your email'} icon={false} />
+      <InputField/>
     </div>
   )
 }
