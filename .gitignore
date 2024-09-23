@@ -1,3 +1,8 @@
 venv/
-*.pyc
+# Ignore Python cache files
 __pycache__/
+*.py[cod]
+
+# Ignore Django migration files
+*/migrations/
+!*/migrations/__init__.py  # Keep __init__.py files to ensure migrations folder is not empty
