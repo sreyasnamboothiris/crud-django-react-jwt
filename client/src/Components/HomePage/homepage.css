@@ -1,0 +1,25 @@
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 1s ease forwards;
+}
+html, body {
+    margin: 0;            /* Remove default margin */
+    padding: 0;           /* Remove default padding */
+    overflow: hidden;     /* Prevent scrollbars */
+    width: 100vw;         /* Full width */
+    height: 100vh;        /* Full height */
+}
+
+.flex {
+    overflow: hidden;     /* Prevent overflow for the flex container as well */
+}

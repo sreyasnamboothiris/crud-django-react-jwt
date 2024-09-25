@@ -1,14 +1,31 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Controller } from 'react-hook-form';
 
-function InputField() {
-
+function InputField({ control, name, type, placeholder, rules }) {
+  console.log('here rendered',control,name, type, placeholder, rules)
   return (
-    <div className='flex rounded-[12px] flex-row bg-[#814EC3] items-center justify-center'>
-      <FontAwesomeIcon icon="fa-solid fa-user" className='p-2 ml-2 mr-2'/>
-      <input className='text-white text-left rounded-[12px] bg-[#814EC3]' type="text" placeholder='Enter your email' />
+    <div className='flex flex-col'>
+    <div className='flex flex-col'>
+    <Controller
+        control={control}
+        name={name}
+        rules={rules}
+        render={({ field }) => (
+          <input
+            {...field}
+            className='text-white text-left rounded-[12px] bg-[#814EC3] focus:outline-non outline-none'
+            type={type}
+            placeholder={placeholder}
+          />
+        )}
+      />
+      
     </div>
-  )
-}
+    
+      
 
-export default InputField
+      </div>
+    )
+  }
+
+export default InputField;
