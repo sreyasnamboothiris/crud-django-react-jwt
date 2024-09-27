@@ -1,8 +1,22 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+
+from .models import User
+from rest_framework import generics
+from .serializers import UserSerializers
+from rest_framework import mixins
 
 # Create your views here.
 
-def sample_view(request):
+class UserSignupView(generics.CreateAPIView):
+    serializer_class = UserSerializers
 
-    return JsonResponse({'name':'sreyas','age':24})
+
+class UserAccounts(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializers
+    
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializers
+    
+
