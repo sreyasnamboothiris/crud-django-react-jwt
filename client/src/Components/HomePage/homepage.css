@@ -15,11 +15,5 @@
 html, body {
     margin: 0;            /* Remove default margin */
     padding: 0;           /* Remove default padding */
-    overflow: hidden;     /* Prevent scrollbars */
-    width: 100vw;         /* Full width */
-    height: 100vh;        /* Full height */
-}
-
-.flex {
-    overflow: hidden;     /* Prevent overflow for the flex container as well */
+    overflow-x:hidden;     /* Prevent scrollbars */      /* Full height */
 }
