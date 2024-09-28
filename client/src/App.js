@@ -5,6 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from './Pages/Home/Home';
+import Admin from './Pages/Admin/Admin';
 
 library.add(faUser, faCoffee);
 function App() {
@@ -14,6 +15,7 @@ function App() {
       
     <Route index element={<Login/>}/>
     <Route path='/home' element={<Home/>}/>
+    <Route path='/admin' element={<Admin/>}/>
       </Routes>
     </Router>
     
