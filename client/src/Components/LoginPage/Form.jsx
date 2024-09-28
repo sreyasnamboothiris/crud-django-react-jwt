@@ -34,12 +34,12 @@ function Form() {
         setModalMessage('Signup successful!'); // Success message
         setModalType('success');
         setModalIsOpen(true);
-        setIsSignup(false);
+        setIsSignup(false)
        
       })
       .catch(error=>{
         console.log(error.response.data,'signup failed');
-        setModalMessage('Signup failed. Please try again.'); // Error message
+        setModalMessage(error.response.data.username || error.response.email,'Please try again.'); // Error message
       setModalType('error');
       setModalIsOpen(true);
       

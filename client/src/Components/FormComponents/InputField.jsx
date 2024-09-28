@@ -2,7 +2,6 @@ import React from 'react'
 import { Controller } from 'react-hook-form';
 
 function InputField({ control, name, type, placeholder, rules }) {
-  console.log('here rendered',control,name, type, placeholder, rules)
   return (
     <div className='flex flex-col'>
     <div className='flex flex-col'>
