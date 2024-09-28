@@ -18,6 +18,7 @@ function Header() {
           {/* Placeholder for User Image */}
           <span>U</span> {/* You can replace this with an image tag */}
         </div>
+        <Buttons content={'Logout'} style={dummyBtn}/>
         <Buttons content={'Profie'} style={dummyBtn}/>
         
       </div>
