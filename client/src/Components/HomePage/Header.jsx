@@ -1,8 +1,14 @@
 import React from 'react';
 import Buttons from '../Button/Button';
 import { dummyBtn } from '../Button/buttons';
+import { useNavigate } from 'react-router-dom';
+
 
 function Header() {
+  const navigate = useNavigate();
+  const handle = ()=>{
+    navigate('profile')
+  }
   return (
     <div className='flex items-center justify-between p-4 bg-gray-800 text-white'>
       {/* Left Side Buttons */}
@@ -19,7 +25,7 @@ function Header() {
           <span>U</span> {/* You can replace this with an image tag */}
         </div>
         <Buttons content={'Logout'} style={dummyBtn}/>
-        <Buttons content={'Profie'} style={dummyBtn}/>
+        <Buttons onClick={handle} content={'Profie'} style={dummyBtn}/>
         
       </div>
     </div>
