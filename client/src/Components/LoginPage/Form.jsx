@@ -9,6 +9,8 @@ import UserNameForm from '../FormComponents/UserNameForm';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 import Modal from 'react-modal';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../Redux/authSlice';
 
 Modal.setAppElement('#root');
 function Form() {
@@ -18,6 +20,8 @@ function Form() {
   const [modalType, setModalType] = useState(''); 
   const [signup,setSignup] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
 
   const {isSignup,isAdmin,setIsAdmin,setIsSignup} = useContext(LoginStateContext);
   const signinToggle = ()=>{
@@ -27,11 +31,12 @@ function Form() {
   const { control, handleSubmit, formState:{errors}} = useForm();
 
   const onSubmit = (data)=>{
+    
     if (isSignup){
       api.post('users/signup/',data)
       .then(response=>{
         console.log(response.data,'signup successful');
-        setModalMessage('Signup successful!'); // Success message
+        setModalMessage('Signup successful!');
         setModalType('success');
         setModalIsOpen(true);
         setIsSignup(false)
@@ -45,6 +50,21 @@ function Form() {
       
         
       })
+    } else if (!isAdmin){
+      console.log(data)
+      api.post('token/',data,{headers: {
+        'Content-Type': 'application/json'
+      }})
+      .then(response=>{
+        const token = response.data.access;
+        const refres = response.data.refresh;
+        console.log(token,'\n refresh: ',refres);
+        localStorage.setItem('token', token);
+        dispatch(setToken(token));
+        setModalMessage('Login successful!');
+        setModalType('success');
+        setModalIsOpen(true);
+      })
     }
     console.log(data,'onSubmit called, working prperly');
     
@@ -52,7 +72,12 @@ function Form() {
   }
   const closeModal = () => {
     setModalIsOpen(false);
-    navigate('/')
+    if (!isSignup && modalType === 'success'){
+      navigate('/home');
+    } else{
+      navigate('/')
+    }
+    
   };
   const handleError = (errors,e)=>{
     console.log(errors)
@@ -61,9 +86,10 @@ function Form() {
     <div className='flex flex-col justify-center items-center p-5 '>
       <form onSubmit={handleSubmit(onSubmit,handleError)} action="">
         <div className='p-4 flex flex-col gap-6'>
+            
+            <UserNameForm control={control} error={errors}/>
             {isSignup&&isAdmin==false&&
-            <UserNameForm control={control} error={errors}/>}
-            <EmailForm control={control} error={errors}/>
+            <EmailForm control={control} error={errors}/>}
             <PasswordForm control={control} error={errors}/>
             
             <Button content={isSignup?'Sign up':'Login'} style={submitBtn} type='submit'/>
