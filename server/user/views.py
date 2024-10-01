@@ -8,11 +8,14 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
+from rest_framework.permissions import AllowAny
+
 
 # Create your views here.
 
 class UserSignupView(generics.CreateAPIView):
     serializer_class = UserSerializers
+    permission_classes = [AllowAny]
 
 
 class HomeView(APIView):
