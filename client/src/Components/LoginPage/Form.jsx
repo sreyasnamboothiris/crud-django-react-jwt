@@ -3,7 +3,7 @@ import EmailForm from '../FormComponents/EmailForm'
 import { useForm, Controller } from 'react-hook-form'
 import PasswordForm from '../FormComponents/PasswordForm';
 import Button from '../Button/Button';
-import { submitBtn, toggleBtn } from '../Button/buttons';
+import { adminBtn, submitBtn, toggleBtn } from '../Button/buttons';
 import { LoginStateContext } from '../../context/LoginStateProveder';
 import UserNameForm from '../FormComponents/UserNameForm';
 import { useNavigate } from 'react-router-dom';
@@ -91,16 +91,33 @@ function Form() {
             {isSignup&&isAdmin==false&&
             <EmailForm control={control} error={errors}/>}
             <PasswordForm control={control} error={errors}/>
+            {!isSignup && 
+            <div className='flex justify-between'>
+            <div className='flex items-center me-4'>
+              <input type="checkbox" className='rounded-[12px]' />
+              <label htmlFor="" className='ms-2 text-sm text-white '>Remember me</label>
+            </div>
+            <div>
+              <a href="" className='text-black text-sm'>Forgot password</a>
+            </div>
+            </div>
+            }
+            
             
             <Button content={isSignup?'Sign up':'Login'} style={submitBtn} type='submit'/>
             
         </div>
         
       </form>
+      <div className='flex items-center'>
+              <hr className='w-32 h-px mx-auto my-4 bg-white border-0 rounded dark:bg-white'/>
+              <p className='px-2 text-white'>Or</p>
+              <hr className='w-32 h-px mx-auto my-4 bg-white border-0 rounded dark:white'/>
+      </div>
       <div className='p-4'>
         {isAdmin===false && <Button content={isSignup?'Login':'Sign up'} style={toggleBtn} onClick={signinToggle} />}
         </div>
-            <div>{isSignup===false&&<Button content={isAdmin?'User':'Admin'} style={toggleBtn} onClick={()=>{setIsAdmin(!isAdmin)}} />}
+            <div>{isSignup===false&&<Button content={isAdmin?'User':'Admin'} style={adminBtn} onClick={()=>{setIsAdmin(!isAdmin)}} />}
               
             </div>
             <Modal
