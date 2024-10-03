@@ -1,13 +1,16 @@
 import React from 'react';
 import Buttons from '../Button/Button';
 import { dummyBtn } from '../Button/buttons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const handle = ()=>{
-    navigate('profile')
+    if (location.pathname!=='/home/profile'){
+      navigate('profile');
+    }
   }
   return (
     <div className='flex items-center justify-between p-4 bg-gray-800 text-white'>
@@ -18,11 +21,11 @@ function Header() {
         <Buttons content={'Menu'} style={dummyBtn}/>
       </div>
 
-      {/* Profile Section */}
+      
       <div className='flex items-center mr-10'>
         <div className='w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-sm font-bold'>
-          {/* Placeholder for User Image */}
-          <span>U</span> {/* You can replace this with an image tag */}
+        
+          <span>U</span> 
         </div>
         <Buttons content={'Logout'} style={dummyBtn}/>
         <Buttons onClick={handle} content={'Profie'} style={dummyBtn}/>
