@@ -19,8 +19,6 @@ class UserSignupView(generics.CreateAPIView):
 
 
 class HomeView(APIView):
-    print(type(IsAuthenticated),'this is the type')
-    
     
     def get(self, request):
         user = request.user
@@ -28,7 +26,7 @@ class HomeView(APIView):
             "email": user.email,})
 
 class LogoutView(APIView):
-    permission_classes = (IsAuthenticated)
+    permission_classes = (IsAuthenticated,)
     def post(self,request):
 
         try:

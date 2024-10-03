@@ -9,11 +9,14 @@ import UserNameForm from '../FormComponents/UserNameForm';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 import Modal from 'react-modal';
-import { useDispatch } from 'react-redux';
-import { setToken } from '../../Redux/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { isAuthenticated,logedOut } from '../../Redux/authSlice';
+import axios from 'axios';
+
 
 Modal.setAppElement('#root');
 function Form() {
+
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('')
@@ -21,6 +24,9 @@ function Form() {
   const [signup,setSignup] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isAuth = useSelector((state)=>{
+    return state.auth.isAuth
+  })
   
 
   const {isSignup,isAdmin,setIsAdmin,setIsSignup} = useContext(LoginStateContext);
@@ -35,7 +41,7 @@ function Form() {
     if (isSignup){
       api.post('users/signup/',data)
       .then(response=>{
-        console.log(response.data,'signup successful');
+        
         setModalMessage('Signup successful!');
         setModalType('success');
         setModalIsOpen(true);
@@ -43,31 +49,35 @@ function Form() {
        
       })
       .catch(error=>{
-        console.log(error.response.data,'signup failed');
         setModalMessage(error.response.data.username || error.response.email,'Please try again.'); // Error message
       setModalType('error');
       setModalIsOpen(true);
-      
         
       })
     } else if (!isAdmin){
-      console.log(data)
+      console.log(data,isAuth)
       api.post('token/',data,{headers: {
         'Content-Type': 'application/json'
       }})
       .then(response=>{
         const token = response.data.access;
         const refres = response.data.refresh;
-        console.log(token,'\n refresh: ',refres);
+        localStorage.clear();
         localStorage.setItem('token', token);
-        dispatch(setToken(token));
+        localStorage.setItem('refresh',refres);
+        dispatch(isAuthenticated(true));
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data['access']}`
+        console.log(isAuth,'loding in')
         setModalMessage('Login successful!');
         setModalType('success');
         setModalIsOpen(true);
+      }).catch(error=>{
+        console.log(error)
+        setModalMessage((error.response.data.username || error.response.data.email || 'An error occurred') + ', Please try again.');
+        setModalType('error');
+        setModalIsOpen(true);
       })
     }
-    console.log(data,'onSubmit called, working prperly');
-    
     
   }
   const closeModal = () => {
