@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './homepage.css'; // Ensure this path is correct based on your project structure
+import { useDispatch, useSelector } from 'react-redux';
+import { isAuthenticated, logedOut } from '../../Redux/authSlice';
+
+
 
 function HomePage() {
+    const dispatch = useDispatch();
+    const isAuth = useSelector((state)=>{
+        return state.auth.isAuth
+    })
+    
     const user = 'sreays';
+    
     return (
         <div className="flex items-center justify-center h-screen bg-gradient-to-b from-[#3C0B63] via-[#814EC3] to-[#150D1C] text-white"> {/* Updated gradient for a darker bottom */}
             <div className="text-center">
