@@ -76,9 +76,9 @@ function Form() {
         setModalIsOpen(true);
         
         
-      }).catch(error=>{
-        console.log(error)
-        setModalMessage((error.response.data.username || error.response.data.email || 'An error occurred') + ', Please try again.');
+      }).catch(errors=>{
+        console.log(errors)
+        setModalMessage(('An error occurred') + ', Please try again.');
         setModalType('error');
         setModalIsOpen(true);
       })

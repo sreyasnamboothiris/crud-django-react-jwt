@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { isAuthenticated, logedOut } from './Redux/authSlice';
 import { clearUser, setUser } from './Redux/userSlice';
 import UserCreate from './Pages/Admin/UserCreate';
+import AdminEditUser from './Pages/Admin/AdminEditUser';
 
 library.add(faUser, faCoffee);
 function App() {
@@ -51,6 +52,7 @@ function App() {
     <Route path='/admin' element={<Admin/>}/>
     <Route path='/home/profile' element ={<Profile/>}/>
     <Route path='/admin/createUser/' element={<UserCreate/>}/>
+    <Route path='/admin/editUser/' element={<AdminEditUser/>}/>
       </Routes>
       
     </Router>

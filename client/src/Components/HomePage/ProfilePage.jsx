@@ -12,7 +12,7 @@ function ProfilePage() {
   const user = useSelector((state) => state.user.user);
   const token = useSelector((state) => state.auth.isAuth);
   const fileInputRef = useRef(null);
-  const [imageUrl, setImageUrl] = useState(user?`http://localhost:8000${user.profile_picture}`:null);
+  const [imageUrl, setImageUrl] = useState(user?user.profile_picture:null);
   const navigate = useNavigate();
   const watchProfilePicture = watch('profile_picture'); 
 
@@ -55,6 +55,8 @@ function ProfilePage() {
       .then((response)=>{
         console.log(response.data);
         dispatch(setUser(response.data))
+        localStorage.setItem('user',JSON.stringify(response.data))
+        
       }).catch((error)=>{
         console.log(error);
       })

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api';
 import default_image from '../../assets/default_user.jpg'
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEditUser } from '../../Redux/editUser';
 
 function AdminHome() {
   const [users, setUsers] = useState([]);
@@ -37,7 +39,23 @@ function AdminHome() {
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = searchResults.slice(indexOfFirstUser, indexOfLastUser);
+  const editUser = useSelector(state => state.editUser.editUser);
+  const dispatch = useDispatch();
 
+  const editHandle = (userId)=>{
+    api.get(`/admin/users/detail/${userId}/`,{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(response=>{
+      console.log(response.data)
+      dispatch(setEditUser(response.data))
+      navigate('/admin/edituser')
+
+    }).catch(errors=>{
+      console.log(errors)
+    })
+  }
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -69,7 +87,7 @@ function AdminHome() {
                 <input type="checkbox" />
               </div>
               <div className='basis-[50px] bg-white rounded-[50%]'>
-                <img className='rounded-[50%] w-10' src={user.profileImage || default_image} alt="profile" />
+                <img className='rounded-[50%] w-10' src={user.profile_picture || default_image} alt="profile" />
               </div>
               <div className='flex flex-row justify-center items-center gap-4'>
                 <p className='w-32 truncate'>{user.username}</p>
@@ -82,7 +100,7 @@ function AdminHome() {
               <p>Joined date</p>
             </div>
             <div className='flex items-center justify-center w-24'>
-              <button>Edit</button>
+              <button onClick={()=>{editHandle(user.id)}}>Edit</button>
             </div>
           </div>
         ))}
