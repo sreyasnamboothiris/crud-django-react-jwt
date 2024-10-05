@@ -1,9 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 const token = localStorage.getItem('token');
+console.log(token)
+
 
 const initialState = {
-    isAuth: token?true:false,
+    isAuth: token?token:null,
 }
 
 const authSlice = createSlice({
@@ -14,7 +16,7 @@ const authSlice = createSlice({
             state.isAuth = action.payload
         },
         logedOut:(state,action)=>{
-            state.isAuth = false
+            state.isAuth = null
         }
     }
 })

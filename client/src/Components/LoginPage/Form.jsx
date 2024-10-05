@@ -12,12 +12,13 @@ import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { isAuthenticated,logedOut } from '../../Redux/authSlice';
 import axios from 'axios';
+import { setUser } from '../../Redux/userSlice';
 
 
 Modal.setAppElement('#root');
 function Form() {
 
-
+  
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('')
   const [modalType, setModalType] = useState(''); 
@@ -35,9 +36,9 @@ function Form() {
     setIsSignup(!isSignup);
   }
   const { control, handleSubmit, formState:{errors}} = useForm();
-
+  
   const onSubmit = (data)=>{
-    
+  
     if (isSignup){
       api.post('users/signup/',data)
       .then(response=>{
@@ -55,7 +56,7 @@ function Form() {
         
       })
     } else if (!isAdmin){
-      console.log(data,isAuth)
+      
       api.post('token/',data,{headers: {
         'Content-Type': 'application/json'
       }})
@@ -65,12 +66,16 @@ function Form() {
         localStorage.clear();
         localStorage.setItem('token', token);
         localStorage.setItem('refresh',refres);
-        dispatch(isAuthenticated(true));
+        
+        dispatch(isAuthenticated(token));
+        
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data['access']}`
-        console.log(isAuth,'loding in')
+        
         setModalMessage('Login successful!');
         setModalType('success');
         setModalIsOpen(true);
+        
+        
       }).catch(error=>{
         console.log(error)
         setModalMessage((error.response.data.username || error.response.data.email || 'An error occurred') + ', Please try again.');
@@ -83,7 +88,26 @@ function Form() {
   const closeModal = () => {
     setModalIsOpen(false);
     if (!isSignup && modalType === 'success'){
-      navigate('/home');
+      api.get('/users/home/', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      .then(res=>{
+        console.log(res.data)
+        localStorage.setItem('user', JSON.stringify(res.data));
+        dispatch(setUser(res.data))
+
+        if (res.data.is_superuser){
+            navigate('/admin')
+        } else{
+          navigate('/home')
+        }
+        
+      }).catch(errors=>{
+        console.log(errors)
+      })
+      
     } else{
       navigate('/')
     }
@@ -97,9 +121,9 @@ function Form() {
       <form onSubmit={handleSubmit(onSubmit,handleError)} action="">
         <div className='p-4 flex flex-col gap-6'>
             
-            <UserNameForm control={control} error={errors}/>
             {isSignup&&isAdmin==false&&
-            <EmailForm control={control} error={errors}/>}
+            <UserNameForm control={control} error={errors}/>}
+            <EmailForm control={control} error={errors}/>
             <PasswordForm control={control} error={errors}/>
             {!isSignup && 
             <div className='flex justify-between'>

@@ -10,6 +10,7 @@ import Profile from './Pages/Home/Profile';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { isAuthenticated, logedOut } from './Redux/authSlice';
+import { clearUser, setUser } from './Redux/userSlice';
 
 library.add(faUser, faCoffee);
 function App() {
@@ -18,12 +19,19 @@ function App() {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const token = await localStorage.getItem('token'); // Simulating async behavior
+        const token = await localStorage.getItem('token');
+        const user = await JSON.parse(localStorage.getItem('user')) 
         if (token !== null) {
-          await dispatch(isAuthenticated(true));
+          await dispatch(isAuthenticated(token));
           
         } else {
           await dispatch(logedOut());
+        }
+        if (user!==null){
+          await dispatch(setUser(user));
+          
+        } else{
+          await dispatch(clearUser());
         }
       } catch (error) {
         

@@ -1,8 +1,7 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import Buttons from '../Button/Button';
 import { dummyBtn } from '../Button/buttons';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 import { useDispatch } from 'react-redux';
 import { logedOut } from '../../Redux/authSlice';
@@ -11,9 +10,12 @@ import { logedOut } from '../../Redux/authSlice';
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const handleProfile = ()=>{
+    navigate('/home/profile',{replace:true})
+  }
   
   const logoutHandle = async () => {
-    console.log(localStorage.getItem('refresh'),localStorage.getItem('token'))
+  
     try {
      
       await api.post('/users/logout/',  {
@@ -48,7 +50,7 @@ function Header() {
           <span>U</span> 
         </div>
         <Buttons content={'Logout'} style={dummyBtn} onClick={logoutHandle}/>
-        <Buttons  content={'Profie'} style={dummyBtn}/>
+        <Buttons  content={'Profie'} style={dummyBtn} onClick={handleProfile}/>
         
       </div>
     </div>
