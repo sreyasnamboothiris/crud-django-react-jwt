@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import AdminHeader from '../../Components/AdminComponents/AdminHeader'
 import AdminNavbar from '../../Components/AdminComponents/AdminNavbar'
 import { useForm } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 import { submitBtn } from '../../Components/Button/buttons'
 import api from '../../api'
-import default_image from '../../assets/default_user.jpg'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import toast, { Toaster } from 'react-hot-toast';

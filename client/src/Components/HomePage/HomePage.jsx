@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import './homepage.css'; // Ensure this path is correct based on your project structure
 import { useDispatch, useSelector } from 'react-redux';
-import { isAuthenticated, logedOut } from '../../Redux/authSlice';
-
-
 
 function HomePage() {
     

@@ -94,8 +94,10 @@ function Form() {
         }
       })
       .then(res=>{
-        console.log(res.data)
-        localStorage.setItem('user', JSON.stringify(res.data));
+        if(res.data){
+          localStorage.setItem('user', JSON.stringify(res.data));
+        }
+        
         dispatch(setUser(res.data))
 
         if (res.data.is_superuser){

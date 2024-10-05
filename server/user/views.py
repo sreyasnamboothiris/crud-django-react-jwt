@@ -26,7 +26,7 @@ class UserSignupView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
 class CustomTokenView(TokenObtainPairView):
-    print('this is custom toekn view')
+
     serializer_class = CustomToken
 
     def post(self, request, *args, **kwargs):
@@ -42,7 +42,7 @@ class CustomTokenView(TokenObtainPairView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        print(f"Response data: {response.data}")
+        
         return response
 
 

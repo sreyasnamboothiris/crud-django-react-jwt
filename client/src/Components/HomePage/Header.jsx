@@ -17,7 +17,6 @@ function Header() {
   const logoutHandle = async () => {
   
     try {
-     
       await api.post('/users/logout/',  {
         refresh_token: localStorage.getItem('refresh'),
       },
