@@ -14,8 +14,7 @@ function Home() {
   })
  
   useEffect(()=>{
-    if(!isAuth){
-     
+    if(isAuth === null){
       navigate('/');
     } 
   })

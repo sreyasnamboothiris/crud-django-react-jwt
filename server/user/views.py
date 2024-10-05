@@ -9,21 +9,54 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import CustomToken
 
 
 # Create your views here.
+class UserProfile(generics.RetrieveUpdateAPIView):
+    print('user profile update class called')
+    queryset = User.objects.all()
+    serializer_class = UserSerializers
+    permission_classes = [IsAuthenticated]
+
 
 class UserSignupView(generics.CreateAPIView):
     serializer_class = UserSerializers
     permission_classes = [AllowAny]
 
+class CustomTokenView(TokenObtainPairView):
+    print('this is custom toekn view')
+    serializer_class = CustomToken
+
+    def post(self, request, *args, **kwargs):
+        
+        email = request.data['email']
+        try:
+            username = User.objects.get(email=email)
+            request.data['username'] = str(username)
+        except Exception as e:
+            pass 
+        try:
+            response = super().post(request, *args, **kwargs)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        print(f"Response data: {response.data}")
+        return response
+
 
 class HomeView(APIView):
-    
+
     def get(self, request):
         user = request.user
-        return Response({"username": user.username,
-            "email": user.email,})
+        
+        try:
+            user_profile = User.objects.get(id=user.id)
+            serializer = UserSerializers(user_profile)
+            return Response(serializer.data)
+        except:
+            return Response({"Error":"user profile not fouldn"},status=404)
 
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -35,6 +68,7 @@ class LogoutView(APIView):
             token.blacklist()
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
+            print(e,hello)
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
