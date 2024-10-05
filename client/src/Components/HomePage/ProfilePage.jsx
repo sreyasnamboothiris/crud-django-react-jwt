@@ -14,7 +14,7 @@ function ProfilePage() {
   const fileInputRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(user?`http://localhost:8000${user.profile_picture}`:null);
   const navigate = useNavigate();
-  const watchProfilePicture = watch('profile_picture'); // Watching the file input changes
+  const watchProfilePicture = watch('profile_picture'); 
 
   useEffect(() => {
     if (token === null) {

@@ -25,11 +25,14 @@ class UserSerializers(serializers.ModelSerializer):
             raise serializers.ValidationError("Email cannot be empty or just spaces.")
         
         
-        if self.instance.email != value and User.objects.filter(email=value).exists():
-            raise serializers.ValidationError("Email is already taken.")
-
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", value):
-            raise serializers.ValidationError("Invalid email format.")
+        if self.instance:
+        
+            if self.instance.email != value and User.objects.filter(email=value).exists():
+                raise serializers.ValidationError("This email is already in use.")
+        else:
+        
+            if User.objects.filter(email=value).exists():
+                raise serializers.ValidationError("This email is already in use.")
         return value
 
     def validate_password(self, value):

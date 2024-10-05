@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api';
 import default_image from '../../assets/default_user.jpg'
+import { useNavigate } from 'react-router-dom';
 
 function AdminHome() {
   const [users, setUsers] = useState([]);
@@ -8,10 +9,13 @@ function AdminHome() {
   const [usersPerPage] = useState(4); 
   const [search,setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
-    api.get('admin/users/')
+    api.get('admin/users/',{headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },})
       .then(response => {
         setUsers(response.data);
         console.log(response.data);
@@ -53,7 +57,7 @@ function AdminHome() {
           </div>
         </div>
         <div>
-          <button className='px-3 border-2 rounded-[8px] border-gray-800 hover:bg-gray-500 cursor-pointer'>Add member</button>
+          <button onClick={()=>{navigate('createUser')}} className='px-3 border-2 rounded-[8px] border-gray-800 hover:bg-gray-500 cursor-pointer'>Add member</button>
         </div>
       </div>
 
